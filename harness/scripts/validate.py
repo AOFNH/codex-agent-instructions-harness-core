@@ -16,6 +16,8 @@ ALLOWED_OWNERS = {"company", "personal", "public"}
 ALLOWED_AUTHORITIES = {"hard", "heuristic"}
 ALLOWED_STATUSES = {"current", "deprecated"}
 ALLOWED_EVIDENCE = {"company", "target-repo", "workspace/domain", "task", "repository"}
+ALLOWED_REPOSITORY_KINDS = {"core", "personal-overlay"}
+ALLOWED_CORE_AUTHORITIES = {"maintainer-only", "none"}
 FORBIDDEN_PATTERNS = {
     "personal absolute path": re.compile(r"/(?:Users|home|private/tmp|var/folders)/"),
     # Split the literal so the scanner does not flag this pattern's own source.
@@ -32,6 +34,32 @@ def load_yaml(path: Path):
             return yaml.safe_load(fh)
     except (OSError, yaml.YAMLError) as exc:
         raise ValueError(f"{path}: cannot parse YAML: {exc}") from exc
+
+
+def validate_repository_identity(root: Path):
+    """Validate the role markers used by core and personal overlays."""
+    identity_root = root / ".instructions"
+    core_marker = identity_root / "repository.yaml"
+    overlay_marker = identity_root / "overlay.yaml"
+    if not core_marker.is_file():
+        raise ValueError(f"{core_marker}: core repository identity marker is required")
+    core = require_mapping(load_yaml(core_marker), str(core_marker))
+    if core.get("schema_version") != 1:
+        raise ValueError(f"{core_marker}: schema_version must be 1")
+    if core.get("repository_kind") not in ALLOWED_REPOSITORY_KINDS or core.get("repository_kind") != "core":
+        raise ValueError(f"{core_marker}: repository_kind must be 'core'")
+    if core.get("core_change_authority") not in ALLOWED_CORE_AUTHORITIES or core.get("core_change_authority") != "maintainer-only":
+        raise ValueError(f"{core_marker}: core_change_authority must be 'maintainer-only'")
+    if not overlay_marker.is_file():
+        return "core"
+    overlay = require_mapping(load_yaml(overlay_marker), str(overlay_marker))
+    if overlay.get("schema_version") != 1:
+        raise ValueError(f"{overlay_marker}: schema_version must be 1")
+    if overlay.get("repository_kind") not in ALLOWED_REPOSITORY_KINDS or overlay.get("repository_kind") != "personal-overlay":
+        raise ValueError(f"{overlay_marker}: repository_kind must be 'personal-overlay'")
+    if overlay.get("core_change_authority") not in ALLOWED_CORE_AUTHORITIES or overlay.get("core_change_authority") != "none":
+        raise ValueError(f"{overlay_marker}: core_change_authority must be 'none'")
+    return "personal-overlay"
 
 
 def frontmatter(path: Path):
@@ -279,6 +307,7 @@ def main():
     args = parser.parse_args()
     root = args.root.resolve()
     try:
+        repository_kind = validate_repository_identity(root)
         real_catalog, real_ids = validate_catalog(root)
         fixture_catalog, fixture_ids = validate_fixture_catalog(root / "harness/fixtures/catalog.yaml")
         validate_cases(root / "harness/fixtures/routing-cases.yaml", fixture_ids)
@@ -289,6 +318,7 @@ def main():
         print(f"FAIL: {exc}", file=sys.stderr)
         return 1
     print(f"PASS: runtime catalog ({len(real_ids)} entries)")
+    print(f"PASS: repository identity ({repository_kind})")
     print(f"PASS: fixture catalog ({len(fixture_ids)} entries)")
     print("PASS: routing cases and redaction checks")
     return 0

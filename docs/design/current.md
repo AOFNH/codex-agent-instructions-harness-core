@@ -51,6 +51,28 @@ Routing uses two stages: semantic candidate discovery followed by environmental
 fact confirmation. It does not use a single keyword table or `active-profile`
 as a company switch.
 
+### 3.0 Repository roles and agent operating modes
+
+Every checkout declares its repository role under `.instructions/`:
+
+- `.instructions/repository.yaml` identifies the inherited core as
+  `repository_kind: core` with `core_change_authority: maintainer-only`;
+- a personal overlay adds `.instructions/overlay.yaml` with
+  `repository_kind: personal-overlay` and `core_change_authority: none`.
+
+The overlay marker takes precedence for a personal checkout; the inherited core
+marker remains read-only. An agent operating in a core checkout uses
+`core-maintainer` mode. An agent operating in a personal checkout uses
+`overlay-maintainer` mode and may edit only overlay-owned files. A person having
+core developer access does not turn a personal checkout into a core checkout;
+core changes still happen in the core repository.
+
+Role metadata is a routing and safety declaration, not proof of write access.
+Before a side effect, the agent must confirm the marker, target repository,
+source repository, remotes, and the user's explicit task. Conflicting or
+missing evidence is `blocked`. Git hosting permissions and branch protection
+remain the final authority for core writes.
+
 ### 3.1 Target and reference repositories
 
 Evidence priority for the target repository:

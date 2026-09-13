@@ -155,6 +155,12 @@ for the repository being maintained. Use `docs/iterations/` to understand
 historical rationale or the active change, not to reconstruct the current
 design from scratch.
 
+Before side effects, read `.instructions/repository.yaml` and, when present,
+`.instructions/overlay.yaml` to determine the checkout's repository role. A
+personal overlay always operates in overlay-maintainer mode, even when its
+developer also has access to the core repository. Missing or conflicting role
+evidence is blocked; a role marker does not replace Git write permissions.
+
 ### Core repository maintenance
 
 When the target repository is this core repository, maintain its runtime source,
