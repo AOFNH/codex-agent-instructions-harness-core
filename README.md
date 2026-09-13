@@ -24,6 +24,49 @@ Company-specific rules and personal notes belong in overlay repositories. An
 overlay adds its own catalog fragment and references while inheriting this core;
 it should not modify upstream-owned files.
 
+## Build your personal instructions repository
+
+This core is intended to be used as the upstream for a separate personal Git
+repository:
+
+```text
+codex-instructions-core  --upstream-->  your-personal-instructions
+                                             --origin-->  your private remote
+```
+
+If you already have user-level instructions, the agent should classify and
+de-identify them before adding only the reusable company and personal content.
+If you are starting from zero, the agent can create the overlay directories and
+catalog fragment from an empty repository.
+
+Create or choose the personal repository, then send the following prompt to
+your agent. Replace the placeholders before sending it:
+
+```text
+Use <core-repository> as the upstream to build my personal Codex instructions
+repository at <personal-repository>.
+
+Act as the implementer. First read:
+- README.md
+- AGENTS.md
+- harness/PERSONAL-OVERLAY-GUIDE.md
+
+Set the core repository as upstream and my personal repository as origin.
+Review my existing user-level instructions if I provide them, classify reusable
+content into company and personal overlays, de-identify it, and keep runtime
+state out of Git. If no existing instructions are provided, start with an empty
+overlay.
+
+Run the repository validation and routing regression checks, review the diff
+against upstream, and complete the implementation and first commit. Report the
+files changed, validation results, and any information you need from me.
+```
+
+The agent-facing guide contains the full initialization, runtime connection,
+and future upstream synchronization procedure. The result should retain the
+core bootstrap and harness while adding only the personal repository's catalog
+fragment and references.
+
 ## Validate a checkout
 
 From the repository root, run:
