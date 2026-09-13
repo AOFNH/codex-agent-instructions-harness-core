@@ -17,7 +17,8 @@ load only the references that apply. Design notes and iteration records under
 - `agent-references/catalog.d/` — mergeable reference catalog fragments;
 - `docs/design/current.md` — live design specification;
 - `docs/iterations/` — historical design and acceptance records;
-- `harness/` — agent manual, schema, fixtures, and validation scripts.
+- `harness/` — onboarding guide, agent manual, schema, fixtures, and validation
+  scripts.
 
 Company-specific rules and personal notes belong in overlay repositories. An
 overlay adds its own catalog fragment and references while inheriting this core;

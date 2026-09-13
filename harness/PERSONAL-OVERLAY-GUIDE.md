@@ -1,0 +1,137 @@
+---
+title: Personal Overlay Repository Guide
+version: 1.0.0
+audience: coding agents
+status: current
+---
+
+# Personal Overlay Repository Guide
+
+Use this guide when creating a personal instructions repository from this core
+repository. It is an onboarding guide; use `AGENT-HARNESS.md` for later
+maintenance iterations.
+
+## 1. Repository model
+
+Create a separate Git repository for the personal overlay. Keep the remotes
+provider-neutral:
+
+```text
+upstream  -> this core repository
+origin    -> the personal repository
+```
+
+The personal repository inherits the core and adds only personal content. A
+personal repository may contain company rules and personal experience notes,
+but those files remain personal-owned overlay content even when their
+applicability names a company.
+
+## 2. Initialize from core
+
+Start from a clean checkout of the core default branch or a deliberate release
+tag. Configure the remotes and create the personal branch using the hosting
+provider's normal Git operations:
+
+```bash
+git clone <core-repository> <personal-repository>
+cd <personal-repository>
+git remote rename origin upstream
+git remote add origin <personal-repository>
+git switch -c personal/main
+```
+
+Use a provider-specific default branch if the hosting service requires one.
+Do not copy the host's entire Codex runtime directory into this repository.
+
+## 3. Classify existing instructions
+
+If an existing user scope is available, review it before adding files:
+
+- public rules that apply to every project belong in the inherited core only;
+- company team rules belong in `agent-references/company/`;
+- personal preferences and experience belong in `agent-references/personal/`;
+- project-specific rules stay in the target project;
+- authentication, sessions, caches, logs, databases, plugins, skills, memory,
+  and other runtime state stay local and ignored.
+
+Keep only de-identified, reusable content. Do not migrate a rule merely because
+it is present in the old user scope; first identify its owner, authority,
+applicability, and source of truth.
+
+## 4. Add the overlay
+
+Create one or more catalog fragments under
+`agent-references/catalog.d/`. Each fragment must register every reference it
+adds, including owner, authority, status, applicability, evidence requirements,
+and exclusions. Add the corresponding files below `agent-references/company/`
+or `agent-references/personal/`.
+
+Do not edit the core catalog fragment to register overlay content. Do not put
+company or personal rules into the inherited root `AGENTS.md` unless the core
+design is intentionally changed upstream.
+
+## 5. Validate before the first commit
+
+From the personal repository root, run the inherited checks:
+
+```bash
+python3 harness/scripts/validate.py --root .
+python3 harness/scripts/route_regression.py --root .
+python3 -m py_compile harness/scripts/validate.py harness/scripts/route_regression.py
+git diff --check
+```
+
+Review the overlay boundary explicitly:
+
+```bash
+git diff --name-status upstream/main..HEAD
+git merge-base --is-ancestor upstream/main HEAD
+```
+
+The diff should contain only personal catalog fragments and personal/company
+references, unless the personal repository is intentionally contributing a
+separately reviewed upstream change.
+
+## 6. Connect the runtime
+
+After the repository passes validation, connect the user's runtime to the
+personal repository according to the client-specific mechanism. Verify that:
+
+- the personal root `AGENTS.md` remains the inherited core bootstrap;
+- references are loaded only when the routing rules explicitly select them;
+- runtime state and credentials remain outside version control;
+- a clean checkout can run the checks without host-specific files.
+
+Do not use `active-profile` as the normal company selector. Use an isolated
+profile or `CODEX_HOME` only for deliberate isolation or historical
+reproduction.
+
+## 7. First commit and future synchronization
+
+Select files with the Git allowlist and create one atomic initialization commit
+for the overlay. Push the personal branch to `origin` after validation.
+
+For later core updates:
+
+```bash
+git fetch upstream main
+git merge upstream/main
+python3 harness/scripts/validate.py --root .
+python3 harness/scripts/route_regression.py --root .
+git diff --name-status upstream/main..HEAD
+git push origin HEAD:<personal-default-branch>
+```
+
+Resolve conflicts by preserving the core contract in upstream-owned files and
+keeping personal changes in overlay files. Re-run the complete checks after
+every conflict resolution.
+
+## 8. Stop conditions
+
+Stop and record the issue when:
+
+- the core remote or personal remote cannot be identified;
+- a proposed file mixes public, company, and personal ownership;
+- migration would require committing secrets or host runtime state;
+- the overlay changes core files without an intentional upstream change;
+- validation or the upstream boundary check fails.

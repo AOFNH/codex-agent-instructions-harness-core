@@ -8,8 +8,9 @@ status: current
 # Instructions and Context Harness: Agent Manual
 
 Use this manual only when maintaining user-level instructions, a reference
-catalog, routing protocol, or this harness. Ordinary application development
-does not require it.
+catalog, routing protocol, or this harness. For first-time creation of a
+personal repository from core, read `PERSONAL-OVERLAY-GUIDE.md` first. Ordinary
+application development does not require either guide.
 
 ## 1. Maintenance boundaries
 
