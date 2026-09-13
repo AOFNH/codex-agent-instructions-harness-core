@@ -1,5 +1,7 @@
 ---
-title: User-level Agent Instructions and Context Architecture
+title: Live Design Specification — User-level Agent Instructions and Context Architecture
+document_kind: normative-current-design
+audience: agents and maintainers
 status: current
 contract_version: 1.0.0
 last_updated: 2026-09-13
@@ -21,9 +23,11 @@ The runtime sources of truth are:
 - the target project's `AGENTS.md`, code, and configuration: project facts and
   local constraints.
 
-`docs/` serves maintainers only. It records design intent, iteration decisions,
-and acceptance evidence; version control does not make these documents runtime
-instructions automatically.
+`docs/` serves maintainers and agents performing instructions maintenance. This
+file is the self-contained, normative description of the design currently in
+effect. Iteration records preserve historical intent, decisions, and acceptance
+evidence; version control does not make any document runtime instructions
+automatically.
 
 ## 2. Four content classes
 
@@ -170,9 +174,11 @@ Work on each instructions iteration in an isolated branch or worktree:
 5. Save implementation, tests, and decisions in one atomic commit.
 6. Create a tag only when a snapshot must be released.
 
-`docs/design/current.md` expresses the current maintenance contract;
-`docs/iterations/` stores historical decisions. Historical documents do not
-override current runtime rules automatically.
+`docs/design/current.md` is the live maintenance contract and should be
+understood without reconstructing every historical iteration. `docs/iterations/`
+stores historical decisions, plans, and acceptance evidence. Historical
+documents do not override the live design or current runtime rules
+automatically.
 
 ## 8. Quality boundary
 

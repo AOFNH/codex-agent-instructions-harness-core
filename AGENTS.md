@@ -148,6 +148,10 @@ Only when the task concerns instructions, routing, context, or the harness:
 4. Run the structural checks and routing regression cases before changing
    expected results.
 
+Treat `docs/design/current.md` as the self-contained live design specification
+for this repository. Use `docs/iterations/` to understand historical rationale
+or the active change, not to reconstruct the current design from scratch.
+
 Do not read those design and iteration documents for ordinary application
 development tasks. The current runtime files remain the actual behavior under
 test.

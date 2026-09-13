@@ -15,7 +15,7 @@ load only the references that apply. Design notes and iteration records under
 
 - `AGENTS.md` — public bootstrap and routing protocol;
 - `agent-references/catalog.d/` — mergeable reference catalog fragments;
-- `docs/design/` — current maintenance contract;
+- `docs/design/current.md` — live design specification;
 - `docs/iterations/` — historical design and acceptance records;
 - `harness/` — agent manual, schema, fixtures, and validation scripts.
 
