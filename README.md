@@ -1,4 +1,4 @@
-# Codex Instructions Core
+# Codex Agent Instructions Harness — Core
 
 This repository is the upstream, agent-first core for a user-level Codex
 instructions and context system. It defines the small bootstrap that agents
@@ -31,7 +31,7 @@ This core is intended to be used as the upstream for a separate personal Git
 repository:
 
 ```text
-codex-instructions-core  --upstream-->  your-personal-instructions
+codex-agent-instructions-harness-core  --upstream-->  your-personal-instructions
                                              --origin-->  your private remote
 ```
 
