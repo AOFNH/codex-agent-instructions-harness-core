@@ -57,6 +57,11 @@ For text-bearing instructions, explain the semantic delta and its overlay impact
 do not treat a clean textual merge as proof of compatibility. Use deterministic
 tests for harness-code changes, while preserving the separate text review.
 
+For a proactive overlay sync, perform the `none`/`review`/`blocked` impact
+assessment before the merge. A `blocked` result requires a user decision before
+any merge, commit, or push. Include the upstream range, artifact classes,
+affected overlay references, and decision request in the maintenance report.
+
 ## 3. Running validation
 
 Run from the repository root:

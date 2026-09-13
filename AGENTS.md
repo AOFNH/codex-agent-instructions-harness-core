@@ -190,6 +190,12 @@ validation alone is not sufficient. Treat text-bearing instructions and
 metadata as behavior: unchanged wording can still be stale when upstream
 meaning changes. Deterministic harness code is verified with tests, while text
 compatibility requires agent interpretation and an explicit overlay decision.
+At the start of an overlay-maintenance task, fetch upstream and perform a
+read-only impact assessment before merging. Classify the result as `none`,
+`review`, or `blocked`. For `blocked` changes—such as core role/authority
+changes, removed or redefined rules used by the overlay, or uncertain impact—
+stop before merge, commit, or push and ask the user to decide. Report the
+upstream range, affected overlay references, and required decision.
 
 Do not read these design and iteration documents for ordinary application
 development tasks. The current runtime files remain the actual behavior under

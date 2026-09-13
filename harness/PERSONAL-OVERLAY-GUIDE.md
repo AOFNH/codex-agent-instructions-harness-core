@@ -133,8 +133,28 @@ For later core updates:
 old_upstream=$(git rev-parse upstream/main)
 git fetch upstream main
 git diff --stat "$old_upstream"..upstream/main
-git merge upstream/main
 git diff "$old_upstream"..upstream/main -- docs/design harness AGENTS.md
+```
+
+Before `git merge`, classify the upstream range:
+
+- `none`: no inherited contract or overlay applicability is affected; continue
+  with the merge and normal checks;
+- `review`: text, metadata, or harness behavior may affect overlay semantics;
+  record the affected references, merge, then update or retire stale overlay
+  content;
+- `blocked`: core role/authority changes, removed or redefined rules used by the
+  overlay, or impact that cannot be determined. Stop before merge, commit, or
+  push and ask the user to decide.
+
+Report the upstream range, changed artifact classes, affected overlay
+references, impact level, and any decision required. Fetching is read-only; do
+not run unattended background synchronization.
+
+After a `none` or `review` assessment, merge and validate:
+
+```bash
+git merge upstream/main
 python3 harness/scripts/validate.py --root .
 python3 harness/scripts/route_regression.py --root .
 git diff --name-status upstream/main..HEAD

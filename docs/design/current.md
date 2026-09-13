@@ -214,6 +214,26 @@ the overlay. Harness scripts and other deterministic code still require tests
 when their behavior changes, but passing tests alone does not establish that
 textual instructions remain compatible.
 
+### 7.1 Upstream synchronization gate
+
+When an overlay-maintainer starts an instructions-maintenance task, it first
+fetches the configured upstream and checks whether the upstream branch advanced.
+If it did, the agent performs a read-only impact assessment before merging:
+
+- `none`: no inherited contract or overlay applicability is affected; merge and
+  run the normal checks;
+- `review`: text, metadata, or harness behavior may affect overlay semantics;
+  record the affected references, merge, then update or retire overlay content
+  and complete the compatibility review;
+- `blocked`: the change affects the core role/authority model, removes or
+  redefines a rule or identifier used by the overlay, or its impact cannot be
+  determined. Do not merge, commit, or push until the user decides how to
+  proceed.
+
+The agent reports the upstream range, changed artifact classes, affected
+overlay references, impact level, and any decision required from the user.
+Fetching is read-only; there is no unattended background synchronization.
+
 Work on each instructions iteration in an isolated branch or worktree:
 
 1. Read this file, the current iteration record, and relevant harness manual.
