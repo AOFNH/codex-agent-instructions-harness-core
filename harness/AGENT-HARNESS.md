@@ -50,6 +50,10 @@ authorization to push to the core remote.
    records as one atomic change. In an overlay, commit only the overlay files
    that belong to the change; do not copy or revise inherited core records.
 
+When an overlay has merged upstream changes, add a semantic compatibility review
+to this checklist: inspect the upstream range, reread the live design, and
+audit overlay references and catalog metadata for stale or conflicting rules.
+
 ## 3. Running validation
 
 Run from the repository root:

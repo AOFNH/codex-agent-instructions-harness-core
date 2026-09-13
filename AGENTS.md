@@ -183,6 +183,10 @@ catalog fragments and company/personal references under the overlay paths,
 validate them, and inspect `git diff upstream/main..HEAD`. If the desired
 change belongs to the core contract or routing protocol, make it in the core
 repository first and then merge the upstream change into the overlay.
+After every upstream merge, review the upstream semantic changes against the
+overlay's references, applicability, dependencies, and exclusions. Update or
+retire overlay content when the inherited contract changes; passing structural
+validation alone is not sufficient.
 
 Do not read these design and iteration documents for ordinary application
 development tasks. The current runtime files remain the actual behavior under

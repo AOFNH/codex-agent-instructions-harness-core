@@ -130,17 +130,26 @@ for the overlay. Push the personal branch to `origin` after validation.
 For later core updates:
 
 ```bash
+old_upstream=$(git rev-parse upstream/main)
 git fetch upstream main
+git diff --stat "$old_upstream"..upstream/main
 git merge upstream/main
+git diff "$old_upstream"..upstream/main -- docs/design harness AGENTS.md
 python3 harness/scripts/validate.py --root .
 python3 harness/scripts/route_regression.py --root .
 git diff --name-status upstream/main..HEAD
 git push origin HEAD:<personal-default-branch>
 ```
 
+After reviewing the upstream range, reread the live design and relevant harness
+rules. Compare the changed contract with every overlay reference, catalog entry,
+dependency, applicability condition, and exclusion. Update or retire stale
+overlay content before pushing. Structural validation passing does not prove
+that the overlay remains semantically compatible.
+
 Resolve conflicts by preserving the core contract in upstream-owned files and
-keeping personal changes in overlay files. Re-run the complete checks after
-every conflict resolution.
+keeping personal changes in overlay files. Re-run the compatibility review and
+complete checks after every conflict resolution.
 
 ## 8. Stop conditions
 

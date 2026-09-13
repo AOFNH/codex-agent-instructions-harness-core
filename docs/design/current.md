@@ -4,7 +4,7 @@ document_kind: normative-current-design
 audience: agents and maintainers
 status: current
 contract_version: 1.0.0
-last_updated: 2026-09-13
+last_updated: 2026-09-14
 ---
 
 # User-level Agent Instructions and Context Architecture
@@ -197,6 +197,13 @@ design are made in the core repository and then merged by overlays. An overlay
 may add its own catalog fragments and company/personal references, but inherited
 core-owned files remain read-only there. The boundary is checked with
 `git diff upstream/main..HEAD`.
+
+An upstream merge starts an overlay compatibility review. The overlay maintainer
+must inspect the upstream range, reread the live design and relevant harness
+rules, and compare changed contracts with every overlay reference, catalog
+entry, dependency, applicability condition, and exclusion. The maintainer must
+update or retire stale overlay content before considering the synchronization
+complete. Structural validation does not replace this semantic review.
 
 Work on each instructions iteration in an isolated branch or worktree:
 
