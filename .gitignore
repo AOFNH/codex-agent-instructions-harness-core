@@ -1,6 +1,7 @@
 *
 
 !/.gitignore
+!/README.md
 !/AGENTS.md
 !/agent-references/
 !/agent-references/**/
