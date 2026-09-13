@@ -26,9 +26,9 @@ personal repository may contain company rules and personal experience notes,
 but those files remain personal-owned overlay content even when their
 applicability names a company.
 
-The inherited `.instructions/repository.yaml` identifies the core base. Add
-`.instructions/overlay.yaml` to identify this checkout as a personal overlay;
-the overlay marker declares `core_change_authority: none`. This marker describes
+The `.instructions/repository-role.yaml` file is per-repository identity
+metadata. Replace the inherited core role with a personal-overlay role; the
+personal marker declares `core_change_authority: none`. This marker describes
 the operating role and does not grant Git write access to the core repository.
 
 ## 2. Initialize from core
@@ -45,11 +45,12 @@ git remote add origin <personal-repository>
 git switch -c personal/main
 ```
 
-Then add `.instructions/overlay.yaml`:
+Then replace `.instructions/repository-role.yaml` with:
 
 ```yaml
 schema_version: 1
 repository_kind: personal-overlay
+operating_mode: overlay-maintainer
 core_change_authority: none
 ```
 
@@ -103,7 +104,7 @@ git merge-base --is-ancestor upstream/main HEAD
 
 The validation output must report `repository identity (personal-overlay)`.
 
-The diff should contain the personal overlay marker, personal catalog
+The diff should contain the per-repository role manifest, personal catalog
 fragments, and personal/company references, unless the personal repository is
 intentionally contributing a separately reviewed upstream change.
 

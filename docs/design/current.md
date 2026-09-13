@@ -53,19 +53,23 @@ as a company switch.
 
 ### 3.0 Repository roles and agent operating modes
 
-Every checkout declares its repository role under `.instructions/`:
+Every checkout declares its repository role in
+`.instructions/repository-role.yaml`:
 
-- `.instructions/repository.yaml` identifies the inherited core as
-  `repository_kind: core` with `core_change_authority: maintainer-only`;
-- a personal overlay adds `.instructions/overlay.yaml` with
-  `repository_kind: personal-overlay` and `core_change_authority: none`.
+- the core repository records `repository_kind: core`,
+  `operating_mode: core-maintainer`, and
+  `core_change_authority: maintainer-only`;
+- a personal overlay records `repository_kind: personal-overlay`,
+  `operating_mode: overlay-maintainer`, and `core_change_authority: none`.
 
-The overlay marker takes precedence for a personal checkout; the inherited core
-marker remains read-only. An agent operating in a core checkout uses
-`core-maintainer` mode. An agent operating in a personal checkout uses
-`overlay-maintainer` mode and may edit only overlay-owned files. A person having
-core developer access does not turn a personal checkout into a core checkout;
-core changes still happen in the core repository.
+The role manifest is per-repository identity metadata. A personal overlay may
+replace the inherited core manifest with its own role manifest; this is the
+only inherited core path intentionally changed during overlay initialization.
+An agent operating in a core checkout uses `core-maintainer` mode. An agent
+operating in a personal checkout uses `overlay-maintainer` mode and may edit only
+overlay-owned files. A person having core developer access does not turn a
+personal checkout into a core checkout; core changes still happen in the core
+repository.
 
 Role metadata is a routing and safety declaration, not proof of write access.
 Before a side effect, the agent must confirm the marker, target repository,

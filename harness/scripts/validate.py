@@ -17,6 +17,7 @@ ALLOWED_AUTHORITIES = {"hard", "heuristic"}
 ALLOWED_STATUSES = {"current", "deprecated"}
 ALLOWED_EVIDENCE = {"company", "target-repo", "workspace/domain", "task", "repository"}
 ALLOWED_REPOSITORY_KINDS = {"core", "personal-overlay"}
+ALLOWED_OPERATING_MODES = {"core-maintainer", "overlay-maintainer"}
 ALLOWED_CORE_AUTHORITIES = {"maintainer-only", "none"}
 FORBIDDEN_PATTERNS = {
     "personal absolute path": re.compile(r"/(?:Users|home|private/tmp|var/folders)/"),
@@ -37,29 +38,33 @@ def load_yaml(path: Path):
 
 
 def validate_repository_identity(root: Path):
-    """Validate the role markers used by core and personal overlays."""
+    """Validate the explicit role marker used by each repository."""
     identity_root = root / ".instructions"
-    core_marker = identity_root / "repository.yaml"
-    overlay_marker = identity_root / "overlay.yaml"
-    if not core_marker.is_file():
-        raise ValueError(f"{core_marker}: core repository identity marker is required")
-    core = require_mapping(load_yaml(core_marker), str(core_marker))
-    if core.get("schema_version") != 1:
-        raise ValueError(f"{core_marker}: schema_version must be 1")
-    if core.get("repository_kind") not in ALLOWED_REPOSITORY_KINDS or core.get("repository_kind") != "core":
-        raise ValueError(f"{core_marker}: repository_kind must be 'core'")
-    if core.get("core_change_authority") not in ALLOWED_CORE_AUTHORITIES or core.get("core_change_authority") != "maintainer-only":
-        raise ValueError(f"{core_marker}: core_change_authority must be 'maintainer-only'")
-    if not overlay_marker.is_file():
-        return "core"
-    overlay = require_mapping(load_yaml(overlay_marker), str(overlay_marker))
-    if overlay.get("schema_version") != 1:
-        raise ValueError(f"{overlay_marker}: schema_version must be 1")
-    if overlay.get("repository_kind") not in ALLOWED_REPOSITORY_KINDS or overlay.get("repository_kind") != "personal-overlay":
-        raise ValueError(f"{overlay_marker}: repository_kind must be 'personal-overlay'")
-    if overlay.get("core_change_authority") not in ALLOWED_CORE_AUTHORITIES or overlay.get("core_change_authority") != "none":
-        raise ValueError(f"{overlay_marker}: core_change_authority must be 'none'")
-    return "personal-overlay"
+    marker = identity_root / "repository-role.yaml"
+    if not marker.is_file():
+        raise ValueError(f"{marker}: repository role marker is required")
+    identity = require_mapping(load_yaml(marker), str(marker))
+    if identity.get("schema_version") != 1:
+        raise ValueError(f"{marker}: schema_version must be 1")
+    repository_kind = identity.get("repository_kind")
+    operating_mode = identity.get("operating_mode")
+    authority = identity.get("core_change_authority")
+    if repository_kind not in ALLOWED_REPOSITORY_KINDS:
+        raise ValueError(f"{marker}: repository_kind must be one of {sorted(ALLOWED_REPOSITORY_KINDS)}")
+    if operating_mode not in ALLOWED_OPERATING_MODES:
+        raise ValueError(f"{marker}: operating_mode must be one of {sorted(ALLOWED_OPERATING_MODES)}")
+    if authority not in ALLOWED_CORE_AUTHORITIES:
+        raise ValueError(f"{marker}: core_change_authority must be one of {sorted(ALLOWED_CORE_AUTHORITIES)}")
+    expected = {
+        "core": ("core-maintainer", "maintainer-only"),
+        "personal-overlay": ("overlay-maintainer", "none"),
+    }[repository_kind]
+    if (operating_mode, authority) != expected:
+        raise ValueError(
+            f"{marker}: {repository_kind} requires operating_mode={expected[0]!r} "
+            f"and core_change_authority={expected[1]!r}"
+        )
+    return repository_kind, operating_mode
 
 
 def frontmatter(path: Path):
@@ -284,7 +289,7 @@ def validate_cases(path: Path, fixture_ids):
 
 def scan_redaction(root: Path):
     paths = [root / "AGENTS.md"]
-    for directory in (root / "agent-references", root / "docs", root / "harness"):
+    for directory in (root / ".instructions", root / "agent-references", root / "docs", root / "harness"):
         if directory.exists():
             paths.extend(path for path in directory.rglob("*") if path.is_file())
     findings = []
@@ -307,7 +312,7 @@ def main():
     args = parser.parse_args()
     root = args.root.resolve()
     try:
-        repository_kind = validate_repository_identity(root)
+        repository_kind, operating_mode = validate_repository_identity(root)
         real_catalog, real_ids = validate_catalog(root)
         fixture_catalog, fixture_ids = validate_fixture_catalog(root / "harness/fixtures/catalog.yaml")
         validate_cases(root / "harness/fixtures/routing-cases.yaml", fixture_ids)
@@ -318,7 +323,7 @@ def main():
         print(f"FAIL: {exc}", file=sys.stderr)
         return 1
     print(f"PASS: runtime catalog ({len(real_ids)} entries)")
-    print(f"PASS: repository identity ({repository_kind})")
+    print(f"PASS: repository identity ({repository_kind}, {operating_mode})")
     print(f"PASS: fixture catalog ({len(fixture_ids)} entries)")
     print("PASS: routing cases and redaction checks")
     return 0

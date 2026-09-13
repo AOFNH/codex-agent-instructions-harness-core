@@ -4,8 +4,7 @@
 !/README.md
 !/AGENTS.md
 !/.instructions/
-!/.instructions/repository.yaml
-!/.instructions/overlay.yaml
+!/.instructions/repository-role.yaml
 !/agent-references/
 !/agent-references/**/
 !/agent-references/**/*.md

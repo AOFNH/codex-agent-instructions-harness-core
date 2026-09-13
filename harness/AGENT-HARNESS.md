@@ -16,7 +16,7 @@ remain read-only and core changes go through upstream.
 
 Before editing, run the structural validator and confirm its repository identity
 result. `core` permits core-maintainer procedures; `personal-overlay` permits
-overlay-maintainer procedures only. A marker is a role declaration, not an
+overlay-maintainer procedures only. The role manifest is a declaration, not an
 authorization to push to the core remote.
 
 ## 1. Maintenance boundaries
