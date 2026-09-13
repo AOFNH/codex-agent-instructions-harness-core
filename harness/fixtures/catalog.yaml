@@ -1,0 +1,53 @@
+schema_version: 1
+entries:
+  - id: company.company-a-backend
+    owner: company
+    authority: hard
+    status: current
+    applies_to:
+      company: [company-a]
+      domain: [backend]
+      task: [api, sql]
+    requires_evidence: [company, target-repo]
+    excludes: [reference-only]
+
+  - id: company.company-a-process
+    owner: company
+    authority: hard
+    status: current
+    applies_to:
+      company: [company-a]
+      domain: [backend, workflow]
+      task: [workflow, process]
+    requires_evidence: [company, target-repo]
+    excludes: [reference-only]
+
+  - id: company.company-b-backend
+    owner: company
+    authority: hard
+    status: current
+    applies_to:
+      company: [company-b]
+      domain: [backend]
+      task: [api, sql]
+    requires_evidence: [company, target-repo]
+    excludes: [reference-only]
+
+  - id: personal.company-a-experience
+    owner: personal
+    authority: heuristic
+    status: current
+    applies_to:
+      company: [company-a]
+      domain: [backend]
+      task: [review, concurrency]
+
+  - id: personal.company-a-preferences
+    owner: personal
+    authority: heuristic
+    status: current
+    applies_to:
+      company: [company-a]
+      domain: [backend, context]
+      task: [design, review, scope, sql, context, commit]
+    requires_evidence: [company]

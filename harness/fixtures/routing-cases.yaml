@@ -1,0 +1,177 @@
+schema_version: 1
+cases:
+  - case_id: target-and-reference-are-distinct
+    task:
+      intent: implement
+      domain: backend
+      topics: [api]
+    environment:
+      workspace_domain: domain-a
+      target_repo: repo-target
+      source_repo: source-target
+      remote_company: company-a
+      reference_repos: [repo-reference]
+    expected:
+      route_status: confirmed
+      company: company-a
+      target_repo: repo-target
+      reference_only: [repo-reference]
+      load: [company.company-a-backend]
+      exclude: [company.company-b-backend, company.company-a-process, personal.company-a-experience, personal.company-a-preferences]
+
+  - case_id: worktree-path-does-not-override-source-repo
+    task:
+      intent: implement
+      domain: backend
+      topics: [api]
+    environment:
+      workspace_domain: domain-a
+      target_repo: repo-target
+      source_repo: source-target
+      remote_company: company-a
+      worktree_company_hint: company-b
+      reference_repos: []
+    expected:
+      route_status: confirmed
+      company: company-a
+      target_repo: repo-target
+      reference_only: []
+      load: [company.company-a-backend]
+      exclude: [company.company-b-backend, company.company-a-process, personal.company-a-experience, personal.company-a-preferences]
+
+  - case_id: weak-company-evidence-is-provisional
+    task:
+      intent: review
+      domain: backend
+      topics: [concurrency]
+    environment:
+      workspace_domain: domain-a
+      target_repo: repo-target
+      source_repo: unknown
+      remote_company: unknown
+      reference_repos: []
+    expected:
+      route_status: provisional
+      company: unknown
+      target_repo: repo-target
+      reference_only: []
+      load: []
+      exclude: [company.company-a-backend, company.company-a-process, company.company-b-backend, personal.company-a-experience, personal.company-a-preferences]
+
+  - case_id: conflicting-company-evidence-blocks-hard-rules
+    task:
+      intent: implement
+      domain: backend
+      topics: [sql]
+    environment:
+      workspace_domain: domain-a
+      target_repo: repo-target
+      source_repo: source-target
+      remote_company: company-a
+      explicit_company: company-b
+      reference_repos: []
+    expected:
+      route_status: blocked
+      company: conflict
+      target_repo: repo-target
+      reference_only: []
+      load: []
+      exclude: [company.company-a-backend, company.company-a-process, company.company-b-backend, personal.company-a-experience, personal.company-a-preferences]
+
+  - case_id: personal-experience-is-task-conditioned
+    task:
+      intent: review
+      domain: backend
+      topics: [concurrency]
+    environment:
+      workspace_domain: domain-a
+      target_repo: repo-target
+      source_repo: source-target
+      remote_company: company-a
+      reference_repos: []
+    expected:
+      route_status: confirmed
+      company: company-a
+      target_repo: repo-target
+      reference_only: []
+      load: [personal.company-a-experience, personal.company-a-preferences]
+      exclude: [company.company-a-backend, company.company-a-process, company.company-b-backend]
+
+  - case_id: personal-preference-applies-experience-does-not
+    task:
+      intent: design
+      domain: backend
+      topics: [scope]
+    environment:
+      workspace_domain: domain-a
+      target_repo: repo-target
+      source_repo: source-target
+      remote_company: company-a
+      reference_repos: []
+    expected:
+      route_status: confirmed
+      company: company-a
+      target_repo: repo-target
+      reference_only: []
+      load: [personal.company-a-preferences]
+      exclude: [company.company-a-backend, company.company-a-process, company.company-b-backend, personal.company-a-experience]
+
+  - case_id: unrelated-company-is-excluded
+    task:
+      intent: implement
+      domain: backend
+      topics: [api]
+    environment:
+      workspace_domain: domain-b
+      target_repo: repo-other
+      source_repo: source-other
+      remote_company: company-b
+      reference_repos: []
+    expected:
+      route_status: confirmed
+      company: company-b
+      target_repo: repo-other
+      reference_only: []
+      load: [company.company-b-backend]
+      exclude: [company.company-a-backend, company.company-a-process, personal.company-a-experience, personal.company-a-preferences]
+
+  - case_id: ordinary-application-task-does-not-load-maintenance-docs
+    task:
+      intent: implement
+      domain: backend
+      topics: [api]
+    environment:
+      workspace_domain: domain-a
+      target_repo: repo-target
+      source_repo: source-target
+      remote_company: company-a
+      repository_kind: application
+      reference_repos: []
+    expected:
+      route_status: confirmed
+      company: company-a
+      target_repo: repo-target
+      reference_only: []
+      load: [company.company-a-backend]
+      maintenance_docs_loaded: false
+      exclude: [company.company-a-process, company.company-b-backend, personal.company-a-experience, personal.company-a-preferences]
+
+  - case_id: explicit-reference-does-not-change-target
+    task:
+      intent: compare
+      domain: backend
+      topics: [migration, api]
+    environment:
+      workspace_domain: domain-a
+      target_repo: repo-target
+      source_repo: source-target
+      remote_company: company-a
+      reference_repos: [repo-reference]
+      explicit_reference_company: company-b
+    expected:
+      route_status: confirmed
+      company: company-a
+      target_repo: repo-target
+      reference_only: [repo-reference]
+      load: [company.company-a-backend]
+      exclude: [company.company-b-backend, company.company-a-process, personal.company-a-experience, personal.company-a-preferences]
