@@ -103,9 +103,9 @@ git merge-base --is-ancestor upstream/main HEAD
 
 The validation output must report `repository identity (personal-overlay)`.
 
-The diff should contain only personal catalog fragments and personal/company
-references, unless the personal repository is intentionally contributing a
-separately reviewed upstream change.
+The diff should contain the personal overlay marker, personal catalog
+fragments, and personal/company references, unless the personal repository is
+intentionally contributing a separately reviewed upstream change.
 
 ## 6. Connect the runtime
 
