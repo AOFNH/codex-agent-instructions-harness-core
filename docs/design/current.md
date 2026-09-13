@@ -165,6 +165,13 @@ verification records.
 
 ## 7. Iterations and sources of truth
 
+Core and personal overlays have different maintenance ownership. Core changes
+to the bootstrap, routing protocol, shared catalog, harness, fixtures, or live
+design are made in the core repository and then merged by overlays. An overlay
+may add its own catalog fragments and company/personal references, but inherited
+core-owned files remain read-only there. The boundary is checked with
+`git diff upstream/main..HEAD`.
+
 Work on each instructions iteration in an isolated branch or worktree:
 
 1. Read this file, the current iteration record, and relevant harness manual.

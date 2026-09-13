@@ -103,9 +103,11 @@ intentional isolation or historical reproduction. Check the effective
 ### Version control for this repository
 
 - The user-level convention repository is maintained with Git.
-- Changes to this file or versioned files under `agent-references/`, `docs/`,
-  and `harness/` require a diff review and one atomic commit before the
-  iteration is complete.
+- In the core repository, changes to this file or versioned files under
+  `agent-references/`, `docs/`, and `harness/` require a diff review and one
+  atomic commit before the iteration is complete. In a personal overlay, this
+  commit rule applies to overlay-owned files; inherited core-owned files remain
+  read-only and are updated through upstream synchronization.
 - If a required convention-document change cannot be committed, state the
   blocker explicitly instead of leaving the version-control step implicit.
 - Keep the repository allowlist-based. Do not stage runtime state, auth/config
@@ -136,7 +138,7 @@ intentional isolation or historical reproduction. Check the effective
 - Keep actual host paths and toolchain details under the ignored
   `$CODEX_HOME/local/` area.
 
-## Maintaining the instructions project
+## Maintaining an instructions repository
 
 Only when the task concerns instructions, routing, context, or the harness:
 
@@ -149,17 +151,36 @@ Only when the task concerns instructions, routing, context, or the harness:
    expected results.
 
 Treat `docs/design/current.md` as the self-contained live design specification
-for this repository. Use `docs/iterations/` to understand historical rationale
-or the active change, not to reconstruct the current design from scratch.
+for the repository being maintained. Use `docs/iterations/` to understand
+historical rationale or the active change, not to reconstruct the current
+design from scratch.
 
-Do not read those design and iteration documents for ordinary application
-development tasks. The current runtime files remain the actual behavior under
-test.
+### Core repository maintenance
 
+When the target repository is this core repository, maintain its runtime source,
+catalog, harness, design, and regression files according to the live design.
 Every intentional routing behavior change must update the runtime source,
 catalog metadata, relevant de-identified regression cases, and the iteration
 decision/acceptance record in one reviewable change. Changing an expected value
 without recording the reason is a test failure, not a fix.
+
+### Personal overlay maintenance
+
+When the target repository is a personal overlay built from this core, treat
+inherited core-owned files as read-only. This includes the inherited root
+`AGENTS.md`, `README.md`, `.gitignore`, `docs/`, core `harness/` files, core
+catalog fragments, and core fixtures. Do not edit or commit those files in the
+personal repository merely to add personal behavior.
+
+Read `harness/PERSONAL-OVERLAY-GUIDE.md` for the overlay workflow. Add personal
+catalog fragments and company/personal references under the overlay paths,
+validate them, and inspect `git diff upstream/main..HEAD`. If the desired
+change belongs to the core contract or routing protocol, make it in the core
+repository first and then merge the upstream change into the overlay.
+
+Do not read these design and iteration documents for ordinary application
+development tasks. The current runtime files remain the actual behavior under
+test.
 
 ## Temporary overrides and client adapters
 

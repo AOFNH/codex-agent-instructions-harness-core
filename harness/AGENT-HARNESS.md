@@ -10,7 +10,9 @@ status: current
 Use this manual only when maintaining user-level instructions, a reference
 catalog, routing protocol, or this harness. For first-time creation of a
 personal repository from core, read `PERSONAL-OVERLAY-GUIDE.md` first. Ordinary
-application development does not require either guide.
+application development does not require either guide. In a personal overlay,
+apply the procedures below only to overlay-owned files; inherited core files
+remain read-only and core changes go through upstream.
 
 ## 1. Maintenance boundaries
 
@@ -39,8 +41,9 @@ application development does not require either guide.
 5. Modify runtime files, the catalog, fixtures, or documentation.
 6. Run all checks again and inspect expected results and provenance.
 7. Review de-identification, the Git allowlist, and the complete diff.
-8. Commit behavior, fixtures, design, and acceptance records as one atomic
-   change.
+8. In the core repository, commit behavior, fixtures, design, and acceptance
+   records as one atomic change. In an overlay, commit only the overlay files
+   that belong to the change; do not copy or revise inherited core records.
 
 ## 3. Running validation
 
@@ -111,7 +114,8 @@ Never commit real information first and plan to de-identify it later.
 
 ## 7. Updating design documents
 
-Update `docs/design/current.md` when any of these changes:
+In the core repository, update `docs/design/current.md` when any of these
+changes:
 
 - routing evidence priority;
 - `confirmed`/`provisional`/`blocked` semantics;
@@ -119,7 +123,8 @@ Update `docs/design/current.md` when any of these changes:
 - boundaries between instructions, fixtures, and the harness.
 
 Do not create a new design version for wording, formatting, or implementation
-details that leave the contract unchanged.
+details that leave the contract unchanged. In a personal overlay, do not edit
+the inherited design document; send a core-contract change upstream instead.
 
 The current iteration record should preserve motivation, trade-offs, failure
 causes, and acceptance results. Historical records do not replace the current
@@ -128,8 +133,10 @@ design.
 ## 8. Commit and release
 
 - Select files explicitly with the Git allowlist; never use `git add -A`.
-- Check runtime files, catalog, fixtures, documents, and harness together for
-  every behavior change.
+- In the core repository, check runtime files, catalog, fixtures, documents,
+  and harness together for every behavior change. In an overlay, check the
+  overlay catalog and references, plus the inherited validation suite, without
+  modifying inherited core files.
 - Do not commit auth, config, session, log, cache, SQLite, memory, plugin,
   skill, shell-snapshot, or `local/` files.
 - Use conventional commits for ordinary fixes. Create an
