@@ -205,6 +205,15 @@ entry, dependency, applicability condition, and exclusion. The maintainer must
 update or retire stale overlay content before considering the synchronization
 complete. Structural validation does not replace this semantic review.
 
+This requirement is stronger for text-bearing artifacts than for ordinary
+deterministic code. In this project, `AGENTS.md`, design documents, catalog
+metadata, and reference files are behavior-bearing instructions: an unchanged
+file can become semantically stale after an upstream wording or rule change.
+The agent must understand the upstream meaning and propagate its implications to
+the overlay. Harness scripts and other deterministic code still require tests
+when their behavior changes, but passing tests alone does not establish that
+textual instructions remain compatible.
+
 Work on each instructions iteration in an isolated branch or worktree:
 
 1. Read this file, the current iteration record, and relevant harness manual.

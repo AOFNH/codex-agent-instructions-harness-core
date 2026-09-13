@@ -53,6 +53,9 @@ authorization to push to the core remote.
 When an overlay has merged upstream changes, add a semantic compatibility review
 to this checklist: inspect the upstream range, reread the live design, and
 audit overlay references and catalog metadata for stale or conflicting rules.
+For text-bearing instructions, explain the semantic delta and its overlay impact;
+do not treat a clean textual merge as proof of compatibility. Use deterministic
+tests for harness-code changes, while preserving the separate text review.
 
 ## 3. Running validation
 

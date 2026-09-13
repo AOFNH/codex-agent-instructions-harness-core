@@ -145,7 +145,11 @@ After reviewing the upstream range, reread the live design and relevant harness
 rules. Compare the changed contract with every overlay reference, catalog entry,
 dependency, applicability condition, and exclusion. Update or retire stale
 overlay content before pushing. Structural validation passing does not prove
-that the overlay remains semantically compatible.
+that the overlay remains semantically compatible. Treat upstream text and
+metadata as behavior-bearing instructions: understand the semantic change and
+record which overlay rules it affects, even when no file has a textual merge
+conflict. Deterministic harness code can be checked with tests, but tests do not
+replace this text-level compatibility decision.
 
 Resolve conflicts by preserving the core contract in upstream-owned files and
 keeping personal changes in overlay files. Re-run the compatibility review and

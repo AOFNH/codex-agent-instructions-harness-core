@@ -186,7 +186,10 @@ repository first and then merge the upstream change into the overlay.
 After every upstream merge, review the upstream semantic changes against the
 overlay's references, applicability, dependencies, and exclusions. Update or
 retire overlay content when the inherited contract changes; passing structural
-validation alone is not sufficient.
+validation alone is not sufficient. Treat text-bearing instructions and
+metadata as behavior: unchanged wording can still be stale when upstream
+meaning changes. Deterministic harness code is verified with tests, while text
+compatibility requires agent interpretation and an explicit overlay decision.
 
 Do not read these design and iteration documents for ordinary application
 development tasks. The current runtime files remain the actual behavior under
