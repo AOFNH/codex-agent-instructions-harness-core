@@ -138,9 +138,16 @@ intentional isolation or historical reproduction. Check the effective
 - Keep actual host paths and toolchain details under the ignored
   `$CODEX_HOME/local/` area.
 
-## Maintaining an instructions repository
+## Maintaining this user-level instructions repository
 
-Only when the task concerns instructions, routing, context, or the harness:
+The procedures in this section apply only when the target repository is this
+user-level instructions repository: the core harness repository or a personal
+overlay built from it. A project that happens to contain skills, context files,
+or its own `AGENTS.md` does not become a harness repository and must not be
+forced to adopt this role protocol.
+
+Only in a confirmed harness repository, and only when the task concerns
+instructions, routing, context, or the harness:
 
 1. Read `docs/design/current.md`.
 2. Read `harness/AGENT-HARNESS.md` when the harness or regression fixtures are
@@ -155,11 +162,13 @@ for the repository being maintained. Use `docs/iterations/` to understand
 historical rationale or the active change, not to reconstruct the current
 design from scratch.
 
-Before side effects, read `.instructions/repository-role.yaml` to determine the
-checkout's repository role and operating mode. A personal overlay always
-operates in overlay-maintainer mode, even when its developer also has access to
-the core repository. Missing or conflicting role evidence is blocked; a role
-marker does not replace Git write permissions.
+Before side effects in a confirmed harness repository, read
+`.instructions/repository-role.yaml` to determine the checkout's repository
+role and operating mode. A personal overlay always operates in
+overlay-maintainer mode, even when its developer also has access to the core
+repository. Missing or conflicting role evidence is blocked; a role marker
+does not replace Git write permissions. For every other target repository,
+ignore this role marker and use that repository's own project instructions.
 
 ### Core repository maintenance
 

@@ -11,6 +11,12 @@ to identify the target repository, confirm company and workspace evidence, and
 load only the references that apply. Design notes and iteration records under
 `docs/` explain why the system is shaped this way; they are not runtime rules.
 
+This core is for the user-level instructions repository and its personal
+overlays. It is not a project-level instructions template. An ordinary
+application, plugin, or skills repository keeps using its own `AGENTS.md` and
+context conventions, even when a task mentions instructions, routing, or a
+harness.
+
 ## Repository layout
 
 - `AGENTS.md` — public bootstrap and routing protocol;

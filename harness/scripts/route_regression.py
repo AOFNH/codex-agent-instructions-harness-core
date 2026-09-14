@@ -52,11 +52,11 @@ def applies(entry, task, company, status):
 
 
 def maintenance_docs_loaded(case):
-    """Model the explicit maintenance-only loading boundary from AGENTS.md."""
+    """Model the harness-only maintenance loading boundary from AGENTS.md."""
     task = case["task"]
     environment = case["environment"]
-    if environment.get("repository_kind") == "instructions":
-        return True
+    if environment.get("repository_kind") not in {"core", "personal-overlay"}:
+        return False
     tokens = {task.get("intent"), task.get("domain"), *task.get("topics", [])}
     return bool(tokens.intersection({"instructions", "routing", "context", "harness"}))
 

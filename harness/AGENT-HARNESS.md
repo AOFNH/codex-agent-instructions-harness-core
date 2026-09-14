@@ -7,9 +7,11 @@ status: current
 
 # Instructions and Context Harness: Agent Manual
 
-Use this manual only when maintaining user-level instructions, a reference
-catalog, routing protocol, or this harness. For first-time creation of a
-personal repository from core, read `PERSONAL-OVERLAY-GUIDE.md` first. Ordinary
+Use this manual only when maintaining this user-level instructions repository,
+its reference catalog, routing protocol, or this harness. For first-time
+creation of a personal repository from core, read
+`PERSONAL-OVERLAY-GUIDE.md` first. Ordinary projects, including projects that
+ship skills or manage their own context, do not inherit this manual. Ordinary
 application development does not require either guide. In a personal overlay,
 apply the procedures below only to overlay-owned files; inherited core files
 remain read-only and core changes go through upstream.

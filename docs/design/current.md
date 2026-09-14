@@ -53,7 +53,8 @@ as a company switch.
 
 ### 3.0 Repository roles and agent operating modes
 
-Every checkout declares its repository role in
+Only this user-level instructions repository and personal overlays built from
+it declare a harness repository role in
 `.instructions/repository-role.yaml`:
 
 - the core repository records `repository_kind: core`,
@@ -62,7 +63,10 @@ Every checkout declares its repository role in
 - a personal overlay records `repository_kind: personal-overlay`,
   `operating_mode: overlay-maintainer`, and `core_change_authority: none`.
 
-The role manifest is per-repository identity metadata. A personal overlay may
+Ordinary application, plugin, or skills repositories do not declare or inherit
+this role manifest merely because their task mentions instructions, context,
+routing, or a harness. They continue to use their own project-level
+instructions. The role manifest is per-harness-repository identity metadata. A personal overlay may
 replace the inherited core manifest with its own role manifest; this is the
 only inherited core path intentionally changed during overlay initialization.
 An agent operating in a core checkout uses `core-maintainer` mode. An agent
@@ -167,7 +171,9 @@ control root-file size, candidate count, and explicit read count.
 
 `AGENTS.override.md` is a temporary same-level replacement, not a company
 selector. `--profile` and a separate `CODEX_HOME` are reserved for intentional
-isolation or historical reproduction.
+isolation or historical reproduction. The harness maintenance workflow is
+similarly repository-scoped: it must not be activated in an ordinary project
+because the task happens to mention an instruction, skill, context, or route.
 
 ## 6. Versions and lifecycle
 

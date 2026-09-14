@@ -156,6 +156,27 @@ cases:
       maintenance_docs_loaded: false
       exclude: [company.company-a-process, company.company-b-backend, personal.company-a-experience, personal.company-a-preferences]
 
+  - case_id: project-that-ships-skills-does-not-inherit-harness
+    task:
+      intent: design
+      domain: context
+      topics: [instructions, routing, harness]
+    environment:
+      workspace_domain: domain-a
+      target_repo: repo-skills-project
+      source_repo: source-skills-project
+      remote_company: company-a
+      repository_kind: application
+      reference_repos: []
+    expected:
+      route_status: confirmed
+      company: company-a
+      target_repo: repo-skills-project
+      reference_only: []
+      load: [personal.company-a-preferences]
+      maintenance_docs_loaded: false
+      exclude: [company.company-a-backend, company.company-a-process, company.company-b-backend, personal.company-a-experience]
+
   - case_id: explicit-reference-does-not-change-target
     task:
       intent: compare
