@@ -3,8 +3,8 @@
 !/.gitignore
 !/README.md
 !/AGENTS.md
-!/.instructions/
-!/.instructions/repository-role.yaml
+!/.repo-governance/
+!/.repo-governance/repository-role.yaml
 !/agent-references/
 !/agent-references/**/
 !/agent-references/**/*.md

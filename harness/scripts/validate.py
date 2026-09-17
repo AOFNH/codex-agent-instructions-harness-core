@@ -39,7 +39,7 @@ def load_yaml(path: Path):
 
 def validate_repository_identity(root: Path):
     """Validate the explicit role marker used by each repository."""
-    identity_root = root / ".instructions"
+    identity_root = root / ".repo-governance"
     marker = identity_root / "repository-role.yaml"
     if not marker.is_file():
         raise ValueError(f"{marker}: repository role marker is required")
@@ -289,7 +289,7 @@ def validate_cases(path: Path, fixture_ids):
 
 def scan_redaction(root: Path):
     paths = [root / "AGENTS.md"]
-    for directory in (root / ".instructions", root / "agent-references", root / "docs", root / "harness"):
+    for directory in (root / ".repo-governance", root / "agent-references", root / "docs", root / "harness"):
         if directory.exists():
             paths.extend(path for path in directory.rglob("*") if path.is_file())
     findings = []

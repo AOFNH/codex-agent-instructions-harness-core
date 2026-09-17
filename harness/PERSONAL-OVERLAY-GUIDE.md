@@ -26,7 +26,7 @@ personal repository may contain company rules and personal experience notes,
 but those files remain personal-owned overlay content even when their
 applicability names a company.
 
-The `.instructions/repository-role.yaml` file is per-repository identity
+The `.repo-governance/repository-role.yaml` file is per-repository identity
 metadata. Replace the inherited core role with a personal-overlay role; the
 personal marker declares `core_change_authority: none`. This marker describes
 the operating role and does not grant Git write access to the core repository.
@@ -45,7 +45,7 @@ git remote add origin <personal-repository>
 git switch -c personal/main
 ```
 
-Then replace `.instructions/repository-role.yaml` with:
+Then replace `.repo-governance/repository-role.yaml` with:
 
 ```yaml
 schema_version: 1
@@ -170,6 +170,14 @@ metadata as behavior-bearing instructions: understand the semantic change and
 record which overlay rules it affects, even when no file has a textual merge
 conflict. Deterministic harness code can be checked with tests, but tests do not
 replace this text-level compatibility decision.
+
+When upgrading from the former `.instructions/` layout, preserve the overlay's
+role values in `.repo-governance/repository-role.yaml` and remove the old tracked
+path. Resolve any rename conflict with `repository_kind: personal-overlay`,
+`operating_mode: overlay-maintainer`, and `core_change_authority: none`. The
+validator reads only the new path; retaining two markers is not a compatibility
+mechanism. Check overlay references and automation for the former path as part
+of the compatibility review.
 
 Resolve conflicts by preserving the core contract in upstream-owned files and
 keeping personal changes in overlay files. Re-run the compatibility review and

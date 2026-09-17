@@ -20,7 +20,8 @@ harness.
 ## Repository layout
 
 - `AGENTS.md` — public bootstrap and routing protocol;
-- `.instructions/` — repository role and core-change authority markers;
+- `.repo-governance/` — versioned repository governance metadata: roles,
+  operating modes, and core-change authority;
 - `agent-references/catalog.d/` — mergeable reference catalog fragments;
 - `docs/design/current.md` — live design specification;
 - `docs/iterations/` — historical design and acceptance records;

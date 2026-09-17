@@ -163,7 +163,7 @@ historical rationale or the active change, not to reconstruct the current
 design from scratch.
 
 Before side effects in a confirmed harness repository, read
-`.instructions/repository-role.yaml` to determine the checkout's repository
+`.repo-governance/repository-role.yaml` to determine the checkout's repository
 role and operating mode. A personal overlay always operates in
 overlay-maintainer mode, even when its developer also has access to the core
 repository. Missing or conflicting role evidence is blocked; a role marker

@@ -4,7 +4,7 @@ document_kind: normative-current-design
 audience: agents and maintainers
 status: current
 contract_version: 1.0.0
-last_updated: 2026-09-14
+last_updated: 2026-09-17
 ---
 
 # User-level Agent Instructions and Context Architecture
@@ -55,13 +55,22 @@ as a company switch.
 
 Only this user-level instructions repository and personal overlays built from
 it declare a harness repository role in
-`.instructions/repository-role.yaml`:
+`.repo-governance/repository-role.yaml`:
 
 - the core repository records `repository_kind: core`,
   `operating_mode: core-maintainer`, and
   `core_change_authority: maintainer-only`;
 - a personal overlay records `repository_kind: personal-overlay`,
   `operating_mode: overlay-maintainer`, and `core_change_authority: none`.
+
+`.repo-governance/` holds versioned metadata about repository identity and
+maintenance boundaries. Future ownership, upstream synchronization, or
+compatibility declarations may belong here when the live contract defines
+their schema and consumers. Instruction content stays in `AGENTS.md` and
+`agent-references/`; validation tools and fixtures stay in `harness/`; host-local
+state stays outside version control. Each new governance file requires an
+explicit allowlist entry and ownership boundary. The directory itself grants
+no additional editing authority to overlays.
 
 Ordinary application, plugin, or skills repositories do not declare or inherit
 this role manifest merely because their task mentions instructions, context,
