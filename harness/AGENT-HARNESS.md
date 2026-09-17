@@ -1,11 +1,11 @@
 ---
-title: Instructions and Context Harness — Agent Manual
+title: RuleHarness — Agent Manual
 version: 1.0.0
 audience: coding agents
 status: current
 ---
 
-# Instructions and Context Harness: Agent Manual
+# RuleHarness: Agent Manual
 
 Use this manual only when maintaining this user-level instructions repository,
 its reference catalog, routing protocol, or this harness. For first-time

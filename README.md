@@ -1,9 +1,15 @@
-# Codex Agent Instructions Harness — Core
+# RuleHarness
 
-This repository is the upstream, agent-first core for a user-level Codex
+A portable harness for agent instructions, context routing, and validation.
+
+This repository is the upstream, agent-first core for a user-level agent
 instructions and context system. It defines the small bootstrap that agents
 load automatically, the routing contract for selecting additional references,
 and a portable harness for checking routing behavior.
+
+RuleHarness is designed for multiple agent clients. The current bootstrap and
+client-specific guidance target Codex. Other clients require explicit adapters
+and validation before being listed as supported.
 
 Most files are written for agents and maintainers rather than for end users.
 The root [`AGENTS.md`](AGENTS.md) is the runtime entry point. It explains how
@@ -38,8 +44,8 @@ This core is intended to be used as the upstream for a separate personal Git
 repository:
 
 ```text
-codex-agent-instructions-harness-core  --upstream-->  your-personal-instructions
-                                             --origin-->  your private remote
+rule-harness  --upstream-->  your-personal-instructions
+                            --origin-->  your private remote
 ```
 
 If you already have user-level instructions, the agent should classify and
@@ -51,7 +57,7 @@ Create or choose the personal repository, then send the following prompt to
 your agent. Replace the placeholders before sending it:
 
 ```text
-Use <core-repository> as the upstream to build my personal Codex instructions
+Use <core-repository> as the upstream to build my personal agent instructions
 repository at <personal-repository>.
 
 Act as the implementer. First read:
@@ -85,4 +91,4 @@ python3 harness/scripts/route_regression.py --root .
 ```
 
 The checks use only files in the checkout and do not require host paths,
-credentials, external services, or a live Codex runtime.
+credentials, external services, or a live agent runtime.

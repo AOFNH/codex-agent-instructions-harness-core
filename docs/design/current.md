@@ -1,5 +1,5 @@
 ---
-title: Live Design Specification — User-level Agent Instructions and Context Architecture
+title: RuleHarness — Live Design Specification
 document_kind: normative-current-design
 audience: agents and maintainers
 status: current
@@ -7,13 +7,19 @@ contract_version: 1.0.0
 last_updated: 2026-09-17
 ---
 
-# User-level Agent Instructions and Context Architecture
+# RuleHarness: User-level Agent Instructions and Context Architecture
 
 ## 1. Purpose and boundary
 
-This project maintains user-level instructions, personal experience notes, and
-routing validation for multiple agent clients. It is not a replacement for a
-business project and is not a runtime configuration center.
+RuleHarness (repository name: `rule-harness`) maintains user-level instructions,
+personal experience notes, and routing validation for multiple agent clients.
+It is not a replacement for a business project and is not a runtime
+configuration center.
+
+The project name is client-neutral. The current bootstrap and client-specific
+guidance target Codex; support for other clients requires explicit adapters and
+validation. The core/overlay distinction is a repository role declared in
+`.repo-governance/repository-role.yaml`, not a required project-name suffix.
 
 The runtime sources of truth are:
 

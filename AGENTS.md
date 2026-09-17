@@ -1,4 +1,4 @@
-# User-level Codex instructions
+# RuleHarness: User-level Agent Instructions
 
 This file is the small, always-loaded bootstrap for the user-level instruction
 repository. It contains public rules and the routing protocol. Detailed company

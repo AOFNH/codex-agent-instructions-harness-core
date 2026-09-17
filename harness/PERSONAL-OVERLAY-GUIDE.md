@@ -1,11 +1,11 @@
 ---
-title: Personal Overlay Repository Guide
+title: RuleHarness — Personal Overlay Repository Guide
 version: 1.0.0
 audience: coding agents
 status: current
 ---
 
-# Personal Overlay Repository Guide
+# RuleHarness: Personal Overlay Repository Guide
 
 Use this guide when creating a personal instructions repository from this core
 repository. It is an onboarding guide; use `AGENT-HARNESS.md` for later
